@@ -1,6 +1,7 @@
 const redux = require('redux');
-// const createStore = redux.createStore();
-const combineReducers = redux.combineReducers
+const reduxLogger = require('redux-logger');
+const combineReducers = redux.combineReducers;
+const logger = reduxLogger.createLogger();
 
 console.log('Hello from index.js');
 
@@ -90,13 +91,13 @@ const rootReducer = combineReducers({
 //Store
 // --> Responsibilities of a store:
 // 1. Holds the state of the application --> createStore takes in a parameter -- which is a reducer function---- It is required to carry out any state transitions based on the actions received
-const store = redux.createStore(rootReducer)
+const store = redux.createStore(rootReducer, redux.applyMiddleware(logger))
 
 // 2. Allows access to aplication state via getState() method
 console.log('Initial state: ', store.getState());
 
 // 4. 
-const unsubscribe = store.subscribe(() => console.log('Updated State', store.getState()));
+const unsubscribe = store.subscribe(() => {});
 
 store.dispatch(buyCake());
 store.dispatch(buyCake());
