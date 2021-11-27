@@ -1,5 +1,6 @@
 const redux = require('redux');
-// const createstore = redux.createStore();
+// const createStore = redux.createStore();
+const combineReducers = redux.combineReducers
 
 console.log('Hello from index.js');
 
@@ -80,10 +81,16 @@ const iceCreamReducer = (state = initialIceCreamState, action) => {
     }
 }
 
+//Combining Multiple Reducers 
+const rootReducer = combineReducers({
+    cake: cakeReducer,
+    iceCream: iceCreamReducer
+  })
+
 //Store
 // --> Responsibilities of a store:
 // 1. Holds the state of the application --> createStore takes in a parameter -- which is a reducer function---- It is required to carry out any state transitions based on the actions received
-const store = redux.createStore(reducer)
+const store = redux.createStore(rootReducer)
 
 // 2. Allows access to aplication state via getState() method
 console.log('Initial state: ', store.getState());
