@@ -1,5 +1,8 @@
 const redux = require('redux');
+const thunk = require('redux-thunk').default;
+const axios = require('axios');
 const createStore = redux.createStore
+const applyMiddleware = redux.applyMiddleware;
 
 
 // State
@@ -65,5 +68,27 @@ const reducer = (state = initialState, action) => {
     }
 }
 
+//Async Action Creator
+const fetchUsers = () => {
+    return (dispatch) => {
+        dispatch(fetchUsersRequest())
+        axios.get(`https://jsonplaceholder.typicode.com/users`)
+        .then(response => {
+            //response.data is the array of users
+            const users = response.data.map(user => user.id)
+            dispatch(fetchUsersSuccess(users))
+        })
+        .catch(err => {
+            //error.message gives the description of error
+            dispatch(fetchUsersFailure(err.message))
+        } )
+    }
+}
+
 //Store 
-const store = createStore(reducer);
+const store = createStore(reducer, applyMiddleware(thunk));
+
+store.subscribe(() => console.log(store.getState()));
+
+//Dispatching the asynchronous action creator
+store.dispatch(fetchUsers());
